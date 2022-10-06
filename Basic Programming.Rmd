@@ -148,6 +148,7 @@ Examples:
 13 >= 5
 13 <= 90
 ```
+has to be > or < before =
 
 We can also make logical statements more complex by creating **and** and **or** statements. 
 
@@ -158,7 +159,7 @@ And statements use &      OR && (if you have more things to evaluate)
 "Micheal Scott" == "good manager" && "Scranton" == "Scranton"
 ```
 
-Or statements use |       OR  || (if you have more things to evaluate)
+Or statements use |       OR  || (if you have more things to evaluate) underneath backspac
 ```{r}
 "Michael Scott" == "good manager" || "Scranton" == "Scranton"
 ```
@@ -178,11 +179,14 @@ sqrt(89)
 ```{r}
 5 * 7 <= 30 || 4 * 8 == 32
 ```
+#can have one repository or multiple repository, need to make private repositories in order to follow ferpa. 
+can either change the privacy in settings, or set as private when creating the repository need to add collaborators for anyone to access. 
+#outline function is on the side
 
 ### Learning Outcome 2: Describe how to use common R functions 
 A note on R functions: R has built in functions that help us create, manipulate, and transform our data. Generally, we use functions by writing the function name followed by parentheses. We'll talk about more of them throughout this lesson, and during the quarter. Here are some that are just generally helpful.
 
-If you want to learn more about a function, you can type ?function name in the console. 
+If you want to learn more about a function, you can type ?function name in the console. Brings up descriptions or help files in bottom right. Ex: ?c in console. Help files made by researchers who made the functions. 
 
 The first one we'll talk about is ":". Typically, it would be used by writing  small#:larger#, and would give you all of the numbers in between. 
 
@@ -193,20 +197,20 @@ The first one we'll talk about is ":". Typically, it would be used by writing  s
 ```{r}
 1 : 8
 ```
+can go down too
+```{r}
+389 : 1
+```
 
 `rep()` allows you to repeat something a set number of times. Looking at the help file, we can see the arguments contained in the function. To use it, we write `rep(thingToBeRepeated, #ofTimes)`. 
 ```{r}
 rep(13, 5)
 rep("cold weather sucks", 3)
 ```
+
+**Note:** For functions, you can either write arguments in the order listed in the help file(which is ?function, in this case ?rep) (not labelled), or make sure you include the argument label. you can change the arguments orders, you just have to let R know
 ```{r}
 rep(times = 4, x = "hi")
-```
-
-**Note:** For functions, you can either write arguments in the order listed in the help file (not labelled), or make sure you include the argument label. 
-```{r}
-
-
 ```
 
 `seq()` gives you a sequence of numbers. typically, we use it by writing `seq(lowest#, highest#, by=#)`. 
@@ -214,7 +218,7 @@ rep(times = 4, x = "hi")
 ```{r}
 
 seq(3, 12, 1)
-seq(3,12,0.01)
+seq(3,12,.01)
 ```
 
 #### Learning Outcome 2 Practice: 
@@ -239,14 +243,19 @@ rep(seq(1,20,3),3)
 
 ###Learning Outcome 3: Explain the differences between variables, vectors, and dataframes 
 
+variable=something we are assigning a value to
+
 What's the problem with using R as a big, fancy calculator? We haven't stored anything so we could use it later. 
 Different things that we will need later have different names, but we store them in the same way
+
+<- carrot
+why not =? assignment symbol? because it does different things in different functions.
 
 nameItsBeingSavedAs <- thingBeingSaved
 
 **Note:** the "assignment operator" (less than sign followed by the hyphen; I was taught to call it a carrot) should be used over an equal sign. There are a lot of reasons for this, but the main one is that R is finicky and different updates and packages read "=" differently, so <- is safest. 
 
-Naming conventions: I was taught to use all lower case for the first word, and capital letters for each word after. That's what I'll use in class. However, you can use whatever convention you want. But a couple of things to keep in mind:
+Naming conventions: I was taught to use all lower case for the first word, and capital letters for each word after. (camelcase) That's what I'll use in class. However, you can use whatever convention you want. But a couple of things to keep in mind:
 
 - R objects (things) can't have spaces in the name
 - R is case sensitive (statistics, Statistics, StAtIsTiCs are all read as three different things)
@@ -260,7 +269,9 @@ Variables store one thing in R (it can be a number, a word, or whatever you want
 ```{r}
 favoriteCoffee <- "vanilla late"
 temperature <- 48
-
+```
+notice it updates in the environment. we can then recall this information
+```{r}
 favoriteCoffee
 temperature
 ```
@@ -268,37 +279,42 @@ temperature
 
 **Vectors**
 
-Vectors are objects that store one dimensional information  
+Vectors are objects that store one dimensional information  (not rows and columns)
 
 To save more than one thing in an R variable, you would use the combine function- `c()`.
 
 ```{r}
 "numeric"
 excitedForFall<- c(10,10,10,3,5,7,8,2)
-"character"
-favoriteSeason<- c("summer", "fall","fall","spring","spring","summer","winter","winter")
+excitedForFall #prints the above numbers in chronological order
+"character" #can also do this with characters
+favoriteSeason<- c("summer","fall","fall","spring","spring","summer","winter","winter")
+favoriteSeason #same as variable above, prints what is in the variable
 ```
 
-If you want to call one of the things you saved in a vector, you can write `vectorName[position of thing]`
+If you want to call one of the things you saved in a vector, you can write `vectorName[position of thing]` sometimes, you just want one unit, called indexing.
 ```{r}
-favoriteSeason[7]
-excitedForFall[3]
+favoriteSeason[7] #for winter
+excitedForFall[3] #prints out third place
 ```
 
 **Dataframes**
 Data frames are made from multiple vectors. There are preloaded datasets in R we can use to practice, such as mtcars: 
 ```{r}
-data(mtcars)
-
+data(mtcars)#click on it to open the data set
 ```
+gets the data set mtcars
+put ?datasetName (?mtcars) to get info about the dataset.
 
-### Practice: Make a vector with 5 animals
+### Practice: 
+
+1)Make a vector with 5 animals
 
 ```{r}
 animals<- c("cat", "dog", "horse", "squirrel", "snake")
 
 ```
-###make a vector of the number of cookies you think each animal could eat
+2)make a vector of the number of cookies you think each animal could eat
 ```{r}
 cookiesPerAnimal<- c(.5,3,25,4,.25)
 
@@ -531,7 +547,7 @@ range(ChickWeight$Time)
 ```{r}
 summary(ChickWeight)
 ```
-
+gives us descriptive statistics for the data set
 2. Find the mean of the weight column
 ```{r}
 mean(ChickWeight$weight)
@@ -539,16 +555,25 @@ mean(ChickWeight$weight)
 
 3. Summarize the data for just the 1st chick
 ```{r}
-
+chick1_weight<-subset(ChickWeight, ChickWeight$chick==1)
+summary(chick1_weight)
+```
+```{r}
+library(tidyverse)
+chick1<-ChickWeight %>% filter(Chick==1)
+summary()
 ```
 
 4. What is the variance of the 1st chick's weight? 
 ```{r}
-var
+var(chick1_weight$weight)
 ```
  
 5. What is the range in weight for each chick posted in the dataset?
 
 ```{r}
-
+library(dplyr)
+colnames(ChickWeight)
+range(ChickWeight %>% filter(Chick==1) %>% select(weight))
 ```
+the above is valid but very time consuming

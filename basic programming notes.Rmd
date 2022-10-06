@@ -1,0 +1,26 @@
+#addition
+```{r}
+8+7
+```
+#subtraction
+```{r}
+10-7
+```
+#multiplication
+```{r}
+4*3
+```
+#division
+```{r}
+9/3
+```
+#square root
+```{r}
+sqrt(144)
+```
+#exponent
+```{r}
+3^99
+```
+
+

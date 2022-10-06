@@ -1,0 +1,8 @@
+---
+title: "datacleaning"
+author: "Christine Friendshuh"
+date: "2022-09-15"
+output: html_document
+---
+
+**data cleaning code goes here**

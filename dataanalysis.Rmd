@@ -1,0 +1,8 @@
+---
+title: "data analysis"
+author: "Christine Friendshuh"
+date: "2022-09-16"
+output: html_document
+---
+
+**data analysis goes here**
