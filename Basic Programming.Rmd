@@ -447,7 +447,7 @@ data("ChickWeight")
 ```
 2. Create a subset of data that contains information for Chick 3. 
 ```{r}
-#View(ChickWeight)
+#View(ChickWeight) in the console
 subset(ChickWeight, ChickWeight$Chick==3)
 ```
 ```{r}
@@ -458,6 +458,9 @@ chickvariable=3
 3. Create a subset of data for Diet 2 only. 
 ```{r}
 subset(ChickWeight, Diet==2)
+```
+```{r}
+ChickWeight %>% filter(Diet==2)
 ```
 
 4. Create a subset of data for all chicks weighing less than 100 gm. 
@@ -487,7 +490,11 @@ tail gives us the last 6
 ```{r}
 
 ```
-if want more
+if want more or less
+```{r}
+head(ChickWeight, 10)
+```
+
 
 This lets us see just part of our data to make sure it loaded appropriately/is what we expect. 
 
@@ -514,13 +521,15 @@ We can also get descriptive statistics for specific columns
 If we need the # of observations, we can use `length()` or `nrow()` to get this information. 
 ```{r}
 length(ChickWeight$Time)
+#tells us how many things are in a vector
 ```
 ```{r}
 nrow(ChickWeight)
+#tells us the number of rows, use with dataframes
 ```
 gives you columns
 ```{r}
-length(ChickWeight)
+length(ChickWeight)#not correct
 ```
 gives you rows
 
@@ -561,7 +570,7 @@ summary(chick1_weight)
 ```{r}
 library(tidyverse)
 chick1<-ChickWeight %>% filter(Chick==1)
-summary()
+summary(chick1)
 ```
 
 4. What is the variance of the 1st chick's weight? 
