@@ -36,30 +36,34 @@ data("diamonds")
 ### editing column names 
 `colnames()` returns all of the column names in a vector. So we can get column names using indexing as well. 
 ```{r}
-colnames(diamonds)
-#to change already existing variable names
-colnames(diamonds)[3]<-"hue"#3rd column
-#now color has been changed to hue
+colnames(diamonds)#this prints out the existing column names
 ```
 ```{r}
 names(diamonds)[3]<-"color"#can also use names instead of colnames
 ```
 ```{r}
-diamonds[0,]#called a tibble, tells us what the variables are
-#can't use this one to change a variable name
+diamonds[0,]#tells us what the variables are
+#this will tell you the type of data you are working with, this one is a tibble which is a special type of data set
+```
+```{r}
+diamonds[0,3]<- "hue"
+diamonds[0,] #can't use this one to change a variable name
 ```
 
 It **also** means that you can change names if necessary (when we talk about dataframe manipulation next week, this can become important.)
 `colnames(data)[position]`
 ```{r}
-
+#to change already existing variable names
+colnames(diamonds)[3]<-"hue"#3rd column
+#now color has been changed to hue
+colnames(diamonds)
 ```
 
-More often than not, we're using datasets that we either created or received from collaborators. That means that you may be dealing with problems **past you** graciously left you, different naming conventions, or even needing to manipulate variables that combine information. We'll talk about how to fix some of the more involved ones next week. For now, ones that may be helpful are making sure your column names are all lower case or all upper case. You can do this with the toupper and tolower functions: be kind to your future self. you could change the way you code, or work with someone that does things differently than you
+More often than not, we're using datasets that we either created or received from collaborators. That means that you may be dealing with problems **past you** graciously left you, different naming conventions, or even needing to manipulate variables that combine information. We'll talk about how to fix some of the more involved ones next week. For now, ones that may be helpful are making sure your column names are all lower case or all upper case. You can do this with the toupper and tolower functions: be kind to your future self. you could change the way you code over time, or work with someone that does things differently than you
 
 ```{r}
 colnames(diamonds)<-toupper(colnames(diamonds))#first you need to assign the column names of the diamond dataset to upper case
-diamonds$carat #then you can print the new variable to see what you got.
+diamonds$carat #this gives you an error message, because you already changed the column name to all caps
 colnames(diamonds)<-tolower(colnames(diamonds))
 colnames(diamonds)
 ```
@@ -75,17 +79,18 @@ diamonds$shiny<-NA#this is empty if not NA it will think it's data
 Then you can fill it with whatever information you want. 
 ```{r}
 diamonds$shiny<-"yes"#now shiny is filled with yes
-diamonds$shiny<- rep(c("yes","no"), nrow(diamonds)/2)
+diamonds$shiny<- rep(c("yes","no"), nrow(diamonds)/2)#this alternates yes and no in the column, divide by 2 because you are dividing by 2 names
 ```
 or you can fill the new column in based on other data in the dataframe
 ```{r}
-diamonds$carat2<- diamonds$carat
+diamonds$carat2<- diamonds$carat#this copies the carat column over to a new column names carat2
 ```
 
 #### Learning Outcome 1 Practice: 
 
 1. Change all of the column names in mtcars to capital letters
 ```{r}
+data("mtcars")
 colnames(mtcars)<- toupper(colnames(mtcars))
 colnames(mtcars)
 ```
@@ -132,15 +137,19 @@ If you want to change the class of your variable, you can assign `as.Preferredcl
 is.factor(diamonds$color)
 is.numeric(diamonds$color)
 
-diamonds$cut-as.character(diamonds$cut)
+diamonds$cut<-as.character(diamonds$cut)
 is.character(diamonds$carat)
 ```
-be careful when you do this
+be careful when you do this, especially when working with factors
 ```{r}
 diamonds$carat2<- as.factor(diamonds$carat2)
 diamonds$carat2<- as.numeric(diamonds$carat2) #when changing from factor to numeric
+diamonds$carat2
+```
+
+```{r}
 #do this instead
-diamonds$carat2<- as.numeric(diamonds$carat2)[diamonds$carat2]
+diamonds$carat2<- as.numeric(levels(diamonds$carat2)[diamonds$carat2])
 ```
 
 **DOUBLE CHECK YOUR DATA**
@@ -148,19 +157,22 @@ diamonds$carat2<- as.numeric(diamonds$carat2)[diamonds$carat2]
 ### Learning Outcome 2 Practice:
 1. Check the class of the horsepower column (hp) 
 ```{r}
-
+class(mtcars$hp)
 ```
 
 2. Change the class of horsepower to a factor
 ```{r}
-
+mtcars$hp<- as.factor(mtcars$hp)
+class(mtcars$hp)
 ```
 
 3. Look at summaries of horsepower as a factor and as a number. What do you notice? 
 ```{r}
-
+summary(mtcars$hp)#this gives us a factor summary since we changed the class to factor above
+#summary(as.numeric(mtcars$hp)),this does not work properly
+summary(as.numeric(levels(mtcars$hp)[mtcars$hp]))#do this instead, use levels and pick position
 ```
-
+factors to numbers requires more work.
 
 ## Learning Outcome 3: Create your own function
 
@@ -178,36 +190,56 @@ You can make a simple function that adds two to a set of numbers
 Before we make the function, we'll make a vector of numbers (1-10) as our input
 
 ```{r}
-
+numbers<- 1:10
 ```
 
 then, we'll name our function addTwo and give it one argument or input
 
 ```{r}
-
+addTwo<- function(thingToAdd){
+  thingToAdd + 2
+}
 ```
 if we run this correctly, it should show up in the environment (top left). 
+Make sure the cursor is in front of the function before you run it. 
 
 Then, we can use our function to add two to our vector:
 
 ```{r}
-
+addTwo(numbers)
+```
+```{r}
+addTwo(9876)
 ```
 
 One thing to note- anything you make in a function **stays in the function.** If you want to save it to a dataframe, you treat your new function just like any other R function (i.e. you need to assign the output to a column or variable)
 
 ```{r}
 "dataframe$column <- function"
-
+mtcars$MPG2<- addTwo(mtcars$MPG)
+colnames(mtcars)
+colnames(mtcars)<- tolower(colnames(mtcars))
 ```
 
 function to mulitply by 7
 ```{r}
-
+multBySeven<- function(thingToMultiply){
+  thingToMultiply * 7
+}
 ```
 **my favorite is**
+can use with characters as well
 ```{r}
-
+favorite<- function(thing){
+  c("my favorite is", thing)
+}
+favorite("french fries")
+```
+```{r}
+favorite2<- function(thing){
+  paste("my favorite is", thing)
+}
+favorite2("french fries")
 ```
 
 ### Multiple argument functions
@@ -215,15 +247,41 @@ function to mulitply by 7
 We can make functions with more than one argument. For instance we could multiply all of the numbers in our original vector by a second vector 10-1
 
 ```{r}
-
+numbersBackwards<- 10:1
+```
+```{r}
+multiplyBy<- function(number1, number2){
+  number1 * number2
+}
+multiplyBy(numbers, numbersBackwards)
 ```
 
 ### Learning Outcome 3 Practice
 
 1. Make a function that divides numbers by 100. 
+```{r}
+divisionByHundred<- function(thingDivision){
+  thingDivision / 100
+}
+```
+
 2. Test your function on the mtcars mpg column.
+```{r}
+data("mtcars")
+divisionByHundred(mtcars$mpg)
+```
+
 3. Make a function that finds the mean of a column and divides it by the standard deviation of another column.
+```{r}
+meanSd<- function(column1, column2){
+mean(column1) / sd(column2)
+}
+```
+
 4. Test it on the mpg column and hp column. 
+```{r}
+meanSd(mtcars$mpg, mtcars$hp)
+```
 
 ## Learning Outcome 4: Create your own for loop
 
@@ -233,10 +291,14 @@ Let's say we wanted to create a column in the chickweight dataset that indicated
 
 We'd have to make a new column
 ```{r}
+data("ChickWeight")
+ChickWeight$beginning<- NA
 ```
 and then fill in that new column by indexing the days column, which has 12 different days. 
 ```{r}
-
+ChickWeight$beginning[ChickWeight$Time<12]<- "beginning"
+ChickWeight$beginning[ChickWeight$Time>12]<- "end"
+ChickWeight$beginning
 ```
 That's a LOT of code. 
 
@@ -253,7 +315,7 @@ individual and bigger group are kind of vague- the idea is that the first part (
 to make our for loop closer to code:
 
 for (i in ChickWeight){
-think we want to do
+thing we want to do
 }
 
 Here, I'm going to fill in the other parts as code: 
@@ -261,13 +323,36 @@ ifelse(logical statment, "TRUE", "FALSE")
 
 
 ```{r}
-
+ChickWeight$beginning2<- NA
+for (i in 1:nrow(ChickWeight)){
+    if(ChickWeight$Time[i] <= 10){ #{i} tells R to go by row, needs it! Forgetting it is the most common mistake when writing a for loop.If it's absent, it only processes the first random position
+      ChickWeight$beginning2[i]<- "yes"
+    }
+    else{ChickWeight$beginning2[i]<- "no"}
+}
 ```
-
+run summary(as.factore(ChickWeight$Time)) in console
 ### Practice for Learning Outcome 4: 
 
-1. Create a for loop that will multiply each number in a vector by 4. Test it with a vector containing the numbers 1:10. 
+1. Create a for loop that will multiply each number in a vector by 4. Test it with a vector containing the numbers 10:100. 
+```{r}
+vectr<- 10:100
+for (i in 1:length(vectr)) {
+  #1 is a position, not a number
+  print(vectr[i] * 4)#have to tell r to print those values  
+}
+```
+
 2. Create a new column in the mtcars data set that indicated whether a car has good mileage (over 25 mpg) or bad mileage (25 mpg or fewer).  
+```{r}
+mtcars$goodMiles<- NA
+for(cars in 1:nrow(mtcars)){
+  if(mtcars$mpg[cars]>=25){
+    mtcars$goodMiles[cars]<- "yes"
+  }
+  else{mtcars$goodMiles[cars]<- "no"}
+}
+```
 
 ## Learning Outcome 5: Create your own if statements and ifelse statments
 
@@ -282,16 +367,22 @@ what you want to happen
 
 Let's try one: in this case, we'll make an if statement to 
 ```{r}
-
+if(ChickWeight$Diet==1){
+  print("grain")
+}#this only gives us an answer for the first row
+#to fix this, use the code below. This does not print out anything because the mean of the chick's weight is over 100
+if(mean(ChickWeight$weight)<100){
+  print("less than 100")
+}
+mean(ChickWeight$weight)#check by getting the mean
 ```
 
-```{r}
-
-```
-
+we tend to pair if statements with else statements. Typically, we use if statements within for loops
 ### else statement
 ```{r}
-
+if(mean(ChickWeight$weight)<100){
+  print("less than 100")
+} else{"more than 100"}
 ```
 
 ### ifelse statements
@@ -302,10 +393,34 @@ ifelse(condition, if TRUE, if FALSE)
 
 We can use this to accomplish the same thing we did above:
 ```{r}
+ifelse(mean(ChickWeight$weight)<100, "less than 100", "more than 100")
 
+ifelse(ChickWeight$Diet==1, "grain", "corn")
 ```
+usually only use if there's two options, not more
 
 ### Learning Outcome 5 Practice: 
 
 1. Make an if statement to determine if the weight of a chick on a given day is greater than 100 grams.  (i.e. is the weight in each row greater than 100 )
+```{r}
+if(ChickWeight$weight > 100){
+  print("yes")
+} else{print("does not meet criteria")}
+```
+```{r}
+ChickWeight$grtrThanHund<- NA
+for (i in 1:nrow(ChickWeight)) {
+  if(ChickWeight$weight[i]<100){
+    ChickWeight$grtrThanHund[i]<- "no"
+  }
+  else{ChickWeight$grtrThanHund[i]<- "yes"}
+}
+```
+```{r}
+ChickWeight$size<- ifelse(ChickWeight$weight>100, "bigChick" ,"smallChick")
+```
+
 2. create a new column in the mtcars data set to indicate whether a car has a manual or automatic transmission. 
+```{r}
+mtcars$transmission<- ifelse(mtcars$am==1, "manual", "automatic")
+```
